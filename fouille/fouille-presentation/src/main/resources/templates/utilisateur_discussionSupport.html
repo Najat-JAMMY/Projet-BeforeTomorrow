@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Discussion - Support</title>
+<link rel="stylesheet" th:href="@{/css/gestionnaire_messagerie.css}" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+
+	<!-- MENU SUPERIEUR  -->
+	<div class="container-fluid">
+		<nav
+			class="navbar navbar-expand-lg navbar-light bg-rose sticky-top fixed-top">
+			<button class="navbar-toggler" type="button"
+				data-mdb-toggle="collapse" data-mdb-target="#navbarExample01"
+				aria-controls="navbarExample01" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<i class="fas fa-bars"></i>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarExample01">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-end">
+					<li class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/accueil}"
+						style="font-variant: small-caps; font-family: Lemon; font-size: 200%;">Before
+							Tomorrow</a></li>
+					<li
+						th:if="${projet != null && projet.etat.toString() == 'REJETE' }"
+						class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/lancerUnProjet/lancerProjet}"><span
+							class="fas fa-location-arrow fa-2x"></span><span> Lancer
+								un nouveau projet</span></a></li>
+					<li class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/compte/messagerieSupport}"><span
+							class="fas fa-question-circle fa-2x"></span><span></span></a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item active"><a
+						class="nav-link" aria-current="page" href="#" th:href="@{/logout}"><span
+							class="fas fa-map-signs fa-2x"></span><span> Se
+								déconnecter</span></a></li>
+					<li sec:authorize="isAnonymous()" class="nav-item active"><a
+						class="nav-link" aria-current="page" href="#"
+						th:href="@{/users/login}"><span class="fas fa-map-signs fa-2x"></span><span>
+								Se connecter</span></a></li>
+				</ul>
+				<ul class="navbar-nav d-flex align-items-end">
+					<li th:if="${discussion != null && discussion.staff != null}"
+						class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/compte/messagerie}"><span
+							class="fas fa-envelope fa-2x" style="color: #009F4D;"></span><span
+							style="color: #009F4D;"> </span></a></li>
+
+
+					<li th:if="${projet == null}" class="nav-item"><a
+						class="nav-link" href="#"
+						th:href="@{/lancerUnProjet/lancerProjet}"><span
+							class="fas fa-location-arrow fa-2x" style="color: #1A658F;"></span><span
+							style="color: #1A658F;"> Lancez votre projet !</span></a></li>
+					<li
+						th:if="${projet != null && projet.etat.toString() == 'EN_PREPARATION_DE_COLLECTE'}"
+						class="nav-item">
+						<form action="#" th:action="@{/projet/showProjet/}" method="get">
+							<button type="submit" class="btn-navbar-collecte" name="id"
+								th:value="${projet.id}">
+								<span class="fas fa-pen-nib fa-2x"></span><span> Éditer
+									mon projet</span>
+							</button>
+						</form>
+					</li>
+					<li
+						th:if="${projet != null && projet.etat.toString() == 'EN_PREPARATION_DE_MISSION'}"
+						class="nav-item">
+						<form action="#" th:action="@{/showMission}" method="get">
+							<button type="submit" name="id" th:value="${projet.id}"
+								class="btn-navbar-mission">
+								<span class="fas fa-pen-nib fa-2x btn-navbar-mission"></span><span>
+									Éditer ma mission</span>
+							</button>
+						</form>
+					</li>
+					<li
+						th:if="${projet != null && projet.etat.toString() == 'EN_MISSION'  }"
+						class="nav-item">
+						<form action="#" th:action="@{/actualites}" method="get">
+							<button type="submit" class="btn-navbar-mission" name="id"
+								th:value="${projet.id}">
+								<span class="fas fa-edit fa-2x"></span><span> Publier une
+									actualité</span>
+							</button>
+						</form>
+					</li>
+					<li
+						th:if="${projet != null &&  projet.etat.toString() == 'EN_CAMPAGNE_DE_COLLECTE'  }"
+						class="nav-item">
+						<form action="#" th:action="@{/actualites}" method="get">
+							<button type="submit" class="btn-navbar-collecte" name="id"
+								th:value="${projet.id}">
+								<span class="fas fa-edit fa-2x"></span><span> Publier une
+									actualité</span>
+							</button>
+						</form>
+					</li>
+				</ul>
+
+			</div>
+		</nav>
+
+		<!-- FIN NAVBAR-->
+		<div class="p-5 text-center bg-image bt-custom-header">
+				<div class="mask" style="background-color: rgba(0, 0, 0, 0.2)">
+					<div class="d-flex justify-content-center align-items-center h-50">
+						<div class="text-white">
+							<h1 class="mb-3 bt-font-lemon"></h1>
+							<h5 class="mb-3">Plateforme de financement participatif pour
+								la recherche scientifique.</h5>
+							<h5 class="mb-3">Contribuez aux missions et suivez les
+								archéologues dans le monde entier d'une saison à l'autre.</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+
+
+
+
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col-md-auto">
+				<a th:href="@{/compte/messagerieSupport}">
+					<button type="submit"
+						class="btn btn-custom-validation text-uppercase mb-2 shadow-sm">Retour</button>
+				</a>
+			</div>
+
+			<div class="col col-lg-1 align-item-left">
+			</div>
+		</div>
+
+		<br> <br>
+
+		<div class="row mt-1 justify-content-center text-center">
+			<div class="col col-lg-2 align-item-right">
+				<hr class="bt-color-marron">
+			</div>
+			<div class="col-md-auto">
+				<h3 class=" bt-color-marron bt-font-lemonRegular">Discussion</h3>
+			</div>
+			<div class="col col-lg-2 align-item-left">
+				<hr class="bt-color-marron">
+			</div>
+		</div>
+		<br> <br>
+		<div class="container">
+			<div th:if="${ListeDeMessage.empty}">
+				<div class="item">
+
+					<div class="ConvVide">
+
+						<p>Envoyer le premier message !</p>
+
+					</div>
+
+					<form action="#" th:action="@{/admins/envoieMesssageSupport/}"
+						method="post">
+
+						<div class="input-group">
+							<input class="form-control width100" name="Message"
+								style="height: 39px;"> <span class="input-group-btn">
+								<button
+									class="btn btn-custom-validation text-uppercase mb-2 shadow-sm">Envoyer</button>
+							</span> <input id="id" name="idDiscussion" type="hidden"
+								th:value="${Discussion.id}" /> <input id="id" name="iDPorteur"
+								type="hidden" th:value="${Porteur.personne.id}" />
+
+						</div>
+					</form>
+				</div>
+			</div>
+			<div th:unless="${ListeDeMessage.empty}">
+				<div class="item">
+					<div class="">
+						<div th:each="message: ${ListeDeMessage}">
+							<div class="containers in"
+								th:if="${message.personne.personne.role.toString() == 'ROLE_GESTIONNAIRE_PROJET' ||message.personne.personne.role.toString() == 'ROLE_CHARGE_COM'}">
+
+								<h5 th:text="${message.personne.personne.nom}"></h5>
+								<p th:text="${message.message}"></p>
+
+							</div>
+
+							<div class="containers darker out"
+								th:if="${message.personne.personne.role.toString() != 'ROLE_GESTIONNAIRE_PROJET' && message.personne.personne.role.toString() != 'ROLE_CHARGE_COM'}">
+
+								<h5 th:text="${message.personne.personne.nom}"
+									class="nomDroiteSupport"></h5>
+								<p th:text="${message.message}" class="nomDroiteSupport"></p>
+
+							</div>
+
+						</div>
+
+						<form action="#" th:action="@{/compte/envoieMesssageSupport/}"
+							method="post">
+
+							<div class="input-group">
+								<input class="form-control width100" name="Message"
+									style="height: 39px;"> <span class="input-group-btn">
+									<button
+										class="btn btn-custom-validation text-uppercase mb-2 shadow-sm">Envoyer</button>
+								</span> <input id="id" name="idDiscussion" type="hidden"
+									th:value="${discussionSupport.id}" />
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<br>
+</body>
+</html>

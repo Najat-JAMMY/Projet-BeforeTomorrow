@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Administration</title>
+
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+ <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+ 
+<link rel="stylesheet" th:href="@{/css/TemplateAdmin.css}" />
+<link rel="stylesheet" th:href="@{/css/StyleAdmin.css}" />
+<!-- Demo CSS -->
+<link rel="stylesheet" href="css/demo.css">
+
+<script>
+		$(document).ready(function(){
+			$(".hamburger .hamburger__inner").click(function(){
+			  $(".wrapper").toggleClass("active")
+			})
+
+			$(".top_navbar .fas").click(function(){
+			   $(".profile_dd").toggleClass("active");
+			});
+		})
+	</script>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="top_navbar">
+			<div class="hamburger">
+				<div class="hamburger__inner">
+					<div class="one"></div>
+					<div class="two"></div>
+					<div class="three"></div>
+				</div>
+			</div>
+			<div class="menu">
+				<div class="logo">Before Tomorrow</div>
+				<div class="right_menu">
+					<ul>
+						<li><i class="fas fa-user"></i>
+							<div class="profile_dd">
+								
+								<div class="dd_item"> <a href="#"  th:href="@{/logout}">
+                  					<span class="title">Deconnexion</span>
+                					</a>
+                				</div>
+							</div></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="main_container">
+			<div class="sidebar">
+				<div class="sidebar__inner">
+					<div class="profile">
+						<div class="img">
+							<!--                 <img src="img/pic.png" alt="profile_pic"> -->
+						</div>
+						<div class="profile_info">
+							<p>Bonjour</p>
+							<p class="profile_name" th:text="${Admin.personne.nom}"></p>
+						</div>
+					</div>
+					<ul>
+						<li>
+						<a href="#" th:href="@{/admins/projet}" class="active">
+								<span class="icon"><i class="fas fa-dice-d6"></i></span> <span
+								class="title">Projet</span>
+						</a>
+						</li>
+						
+						<li><a href="#" th:href="@{/admins/messagerieGestionnaire}"> <span class="icon"><i
+									class="fab fa-delicious"></i></span> <span class="title">Messagerie</span>
+						</a></li>
+						<li th:if="${Admin.personne.role.toString() == 'ROLE_DIRECTEUR'}" ><a href="#"> <span class="icon"><i
+									class="fab fa-elementor"></i></span> <span class="title">UI
+									Elements</span>
+						</a></li>
+
+					</ul>
+				</div>
+			</div>
+			<div class="containerr">
+
+				<header class="intro">
+				<h1>Projets</h1>
+				</header>
+
+
+				<div class="item">
+
+				<h4>PROJETS EN ATTENTE</h4>
+				<br>
+					<table class="table">
+						<tr>
+							<th scope="col">Titre</th>
+							<th scope="col">Descripion</th>
+							<th scope="col">Accepter</th>
+							<th scope="col">Refuser</th>
+						</tr>
+						<tbody th:each="projetAttente: ${listeDeprojetEnAttente}">
+							<td scope="row" th:text="${projetAttente.titre}"></td>
+							<td scope="row" th:text="${projetAttente.description}"></td>
+							
+							<form action="#" th:action="@{/admins/projetDecision}" method="post">
+								
+							<td scope="row"> <input type="submit" name="DecisionAdmin" value="accepter" class="btn"/></td>
+							<td scope="row"><input type="submit" name="DecisionAdmin"  value="refuser" class="btn"/></td>
+							<input id="id" name="id" type="hidden" th:value="${projetAttente.id}" />
+							
+<!-- 							<input type="submit" name="DecisionAdmin"  value=""/> -->
+							
+								</form>
+						</tbody>
+					</table>
+					
+					<br>
+				</div>
+
+			
+				<div class="item">
+				<h4>PROJETS EN PREPARATION</h4>
+				<br>
+					<table class="table">
+						<tr>
+							<th scope="col">Titre</th>
+							<th scope="col">Descripion</th>
+							<th scope="col"></th>
+						
+						</tr>
+						<tbody th:each="projetSuivi: ${listeDeProjetGestionnaire}">
+							<td scope="row" th:text="${projetSuivi.titre}">1</td>
+							<td scope="row" th:text="${projetSuivi.description}"></td>
+							
+							<form action="#" th:action="@{/admins/detailProjetPreparation/}"  method="post">
+							<td scope="row">
+							<button th:value="${projetSuivi.id}" name="idProjet" class="btn">Detail</button>
+							</td>
+							</form>
+							
+						</tbody>
+					</table>
+					<br>
+				</div>
+				
+				<div class="item">
+					<h4>PROJETS EN COLLECTE</h4>
+				<br>
+					<table class="table">
+						<tr>
+							<th scope="col">Titre</th>
+							<th scope="col">Descripion</th>
+							<th scope="col"></th>
+						
+						</tr>
+						<tbody th:each="projetSuiviEnCollecte: ${listeDeProjetGestionnaireEnCollecte}">
+							<td scope="row" th:text="${projetSuiviEnCollecte.titre} ?: 'A remplir'">1</td>
+							<td scope="row" th:text="${projetSuiviEnCollecte.description} ?: 'A remplir'"></td>
+						</tbody>
+					</table>
+					<br>
+				</div>
+				
+					<div class="item">
+					<h4>PROJETS EN FIN DE MISSION</h4>
+				<br>
+					<table class="table">
+						<tr>
+							<th scope="col">Numero</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						
+						</tr>
+						<tbody th:each="cycle: ${listeDeProjetGestionnaireEnFinDeMission}">
+								<td scope="row" th:text="${cycle.projet.id} ?: 'A remplir'"></td>
+								
+								<form action="#" th:action="@{/admins/reconductionProjet/}" method="post">
+								
+							<td scope="row"> <input type="submit" name="DecisionAdmin" value="Reconduire" class="btn"/></td>
+							<td scope="row"><input type="submit" name="DecisionAdmin"  value="Arret" class="btn"/></td>
+							<input id="idProjet" name="idProjet" type="hidden" th:value="${cycle.projet.id}" />
+							<input id="saison" name="saison" type="hidden" th:value="${cycle.saison}" />
+
+							
+								</form>
+						</tbody>
+					</table>
+					<br>
+				</div>
+				
+				
+				
+
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+</html>

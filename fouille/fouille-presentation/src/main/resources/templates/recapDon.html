@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Récapitulatif de votre don</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{js/accueil.js}"></script>
+<link th:href="@{/css/faireUnDon.css}" rel="stylesheet" />
+</head>
+<body>
+
+
+	<div class="container-fluid">
+		<nav
+			class="navbar navbar-expand-lg navbar-light bg-rose sticky-top fixed-top">
+			<button class="navbar-toggler" type="button"
+				data-mdb-toggle="collapse" data-mdb-target="#navbarExample01"
+				aria-controls="navbarExample01" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<i class="fas fa-bars"></i>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarExample01">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-end">
+					<li class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/accueil}"
+						style="font-variant: small-caps; font-family: Lemon; font-size: 200%;">Before
+							Tomorrow</a></li>
+					<li
+						th:if="${projetUser != null && projetUser.etat.toString() == 'REJETE' }"
+						class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/lancerUnProjet/lancerProjet}"><span
+							class="fas fa-location-arrow fa-2x"></span><span> Lancer
+								un nouveau projet</span></a></li>
+					<li class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/compte/messagerieSupport}"><span
+							class="fas fa-question-circle fa-2x"></span><span></span></a></li>
+					<li sec:authorize="isAuthenticated()" class="nav-item active"><a
+						class="nav-link" aria-current="page" href="#" th:href="@{/logout}"><span
+							class="fas fa-map-signs fa-2x"></span><span> Se
+								déconnecter</span></a></li>
+					<li sec:authorize="isAnonymous()" class="nav-item active"><a
+						class="nav-link" aria-current="page" href="#"
+						th:href="@{/users/login}"><span class="fas fa-map-signs fa-2x"></span><span>
+								Se connecter</span></a></li>
+				</ul>
+				<ul class="navbar-nav d-flex align-items-end">
+					<li th:if="${discussion != null && discussion.staff != null}"
+						class="nav-item"><a class="nav-link" href="#"
+						th:href="@{/compte/messagerie}"><span
+							class="fas fa-envelope fa-2x" style="color: #009F4D;"></span><span
+							style="color: #009F4D;"> </span></a></li>
+					
+
+					<li th:if="${projetUser == null}" class="nav-item"><a
+						class="nav-link" href="#"
+						th:href="@{/lancerUnProjet/lancerProjet}"><span
+							class="fas fa-location-arrow fa-2x" style="color: #1A658F;"></span><span
+							style="color: #1A658F;"> Lancez votre projet !</span></a></li>
+					<li
+						th:if="${projetUser != null && projetUser.etat.toString() == 'EN_PREPARATION_DE_COLLECTE'}"
+						class="nav-item">
+						<form action="#" th:action="@{/projet/showProjet/}" method="get">
+							<button type="submit" class="btn-navbar-collecte" name="id"
+								th:value="${projetUser.id}">
+								<span class="fas fa-pen-nib fa-2x"></span><span> Éditer
+									mon projet</span>
+							</button>
+						</form>
+					</li>
+					<li
+						th:if="${projetUser != null && projetUser.etat.toString() == 'EN_PREPARATION_DE_MISSION'}"
+						class="nav-item">
+						<form action="#" th:action="@{/showMission}" method="get">
+							<button type="submit" name="id" th:value="${projetUser.id}"
+								class="btn-navbar-mission">
+								<span class="fas fa-pen-nib fa-2x btn-navbar-mission"></span><span>
+									Éditer ma mission</span>
+							</button>
+						</form>
+					</li>
+					<li
+						th:if="${projetUser != null && projetUser.etat.toString() == 'EN_MISSION'  }"
+						class="nav-item">
+						<form action="#" th:action="@{/actualites}" method="get">
+							<button type="submit" class="btn-navbar-mission" name="id"
+								th:value="${projetUser.id}">
+								<span class="fas fa-edit fa-2x"></span><span> Publier une
+									actualité</span>
+							</button>
+						</form>
+					</li>
+					<li
+						th:if="${projetUser != null &&  projetUser.etat.toString() == 'EN_CAMPAGNE_DE_COLLECTE'  }"
+						class="nav-item">
+						<form action="#" th:action="@{/actualites}" method="get">
+							<button type="submit" class="btn-navbar-collecte" name="id"
+								th:value="${projetUser.id}">
+								<span class="fas fa-edit fa-2x"></span><span> Publier une
+									actualité</span>
+							</button>
+						</form>
+					</li>
+				</ul>
+
+			</div>
+		</nav>
+
+		<!-- FIN NAVBAR-->
+
+		<div class="p-5 text-center bg-image bt-custom-header">
+			<div class="mask" style="background-color: rgba(0, 0, 0, 0.2)">
+				<div class="d-flex justify-content-center align-items-center h-50">
+					<div class="text-white">
+						<h1 class="mb-3 bt-font-lemon"></h1>
+						<h5 class="mb-3">Plateforme de financement participatif pour
+							la recherche scientifique.</h5>
+						<h5 class="mb-3">Contribuez aux missions et suivez les
+							archéologues dans le monde entier d'une saison à l'autre.</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+
+<br>
+<br>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-6">
+					<div class="col">
+						<div class="row mt-1 justify-content-center text-center test"
+							style="margin-left: -100px;">
+
+							<div class="col col-lg-2 align-item-right">
+								<hr class="bt-color-marron">
+							</div>
+							<div class="col-md-auto">
+								<h3 class="bt-color-marron bt-font-lemonRegular">Projet
+									sélectionné</h3>
+							</div>
+							<div class="col col-lg-2 align-item-left">
+								<hr class="bt-color-marron">
+							</div>
+						</div>
+					</div>
+
+					<div class="card" style="width: 18rem;">
+						<img
+							th:src="'/projet/descriptionImage?contenuCollecteId='+${collecte.contenuCollecte.id}"
+							style="width: 287px;" />
+
+						<div class="card-body">
+							<p class="card-text"
+								th:text="${collecte.contenuCollecte.descCourte}"></p>
+								<p class="bt-color-marron bt-font-lemonRegular"
+								th:text="'Montant selectionné : ' +${montant} +'€'"></p>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-lg-8 col-md-6">
+					<div class="row mt-1 justify-content-center text-center">
+						<div class="col col-lg-2 align-item-right">
+							<hr class="bt-color-marron">
+						</div>
+						<div class="col-md-auto">
+							<h3 class="bt-color-marron bt-font-lemonRegular">Sélectionnez
+								une contrepartie</h3>
+						</div>
+						<div class="col col-lg-2 align-item-left">
+							<hr class="bt-color-marron">
+						</div>
+					</div>
+
+
+					<form action="#" th:action="@{/don/recapDon}" method="post">
+
+						<br> <br>
+
+						<div class="card cadre" style="text-align: left;">
+							
+							<input id="choix" name="radioCP" class="checkbox_choix"
+								type="radio" value="PasDeContrePartie" required> <label
+								for="choix"><span> Pas de contrepartie</span> </label>
+							<div th:each="cp : ${listeContrePartie}">
+								<input id="ContrePartie" name="radioCP" class="checkbox_choix"
+									type="radio" th:value="${cp.id}" required />
+									 <label>
+									 <span th:text="${cp.titre}"></span> 
+									 
+
+								</label>
+							</div>
+
+							<input id="idPersonne" name="idPersonne" type="hidden"
+								th:value="${personne.id}" /> <input id="idCollecte"
+								name="idCollecte" type="hidden" th:value="${collecte.id}" /> <input
+								id="idCollecte" name="montant" type="hidden"
+								th:value="${montant}" />
+						</div>
+						<div class="row  mt-1 justify-content-center text-center">
+							<div class="col col-lg-2 align-item-right">
+								<hr class="bt-color-marron">
+							</div>
+							<div class="col-md-auto">
+								<h3 class="bt-color-marron bt-font-lemonRegular">Paiement
+									</h3>
+							</div>
+							<div class="col col-lg-2 align-item-left">
+								<hr class="bt-color-marron">
+							</div>
+						</div>
+						<br> <br>
+
+						<div class="card cadre">
+							<div class="row">
+								<div>
+									<input type="text" class="form-control"
+										placeholder="Numéro de carte" />
+								</div>
+								<div>
+									<input type="text" class="form-control" placeholder="MM/AA" />
+								</div>
+								<div>
+									<input type="text" class="form-control"
+										placeholder="Code sécurité" />
+								</div>
+							</div>
+
+
+
+						</div>
+						<input id="choix" name="radioAno" class="checkbox_choix"
+							type="checkbox" value="Ano"> <label for="choix">Don
+							anonyme (votre nom n'apparaîtra pas sur le site)</label> <br> <br>
+						<button type="submit"
+							class="btn btn-custom-validation text-uppercase mb-2 shadow-sm">Valider</button>
+						<input type="button"
+							class="btn btn-custom-validation btn-block text-uppercase mb-2 shadow-sm"
+							value="Annuler" onclick="history.go(-1)">
+					</form>
+				</div>
+
+			</div>
+		</div>
+</body>
+</html>

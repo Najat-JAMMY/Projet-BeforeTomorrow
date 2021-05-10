@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Administration</title>
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+ <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+ <link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<link rel="stylesheet" th:href="@{/css/TemplateAdmin.css}" />
+<link rel="stylesheet" th:href="@{/css/StyleAdmin.css}" />
+<!-- Demo CSS -->
+<link rel="stylesheet" href="css/demo.css">
+
+<script>
+		$(document).ready(function(){
+			$(".hamburger .hamburger__inner").click(function(){
+			  $(".wrapper").toggleClass("active")
+			})
+
+			$(".top_navbar .fas").click(function(){
+			   $(".profile_dd").toggleClass("active");
+			});
+		})
+	</script>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="top_navbar">
+			<div class="hamburger">
+				<div class="hamburger__inner">
+					<div class="one"></div>
+					<div class="two"></div>
+					<div class="three"></div>
+				</div>
+			</div>
+			<div class="menu">
+					<div class="logo">Before Tomorrow</div>
+				<div class="right_menu">
+					<ul>
+						<li><i class="fas fa-user"></i>
+							<div class="profile_dd">
+							
+								<div class="dd_item"> <a href="#"  th:href="@{/logout}">
+                  					<span class="title">Deconnexion</span>
+                					</a>
+                				</div>
+							</div></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	<div class="main_container">
+			<div class="sidebar">
+				<div class="sidebar__inner">
+					<div class="profile">
+						<div class="img">
+						</div>
+						<div class="profile_info">
+							<p>Welcome</p>
+							<p class="profile_name" th:text="${Admin.personne.nom}"></p>
+						</div>
+					</div>
+					<ul>
+						<li>
+						<a href="#" th:href="@{/admins/projet}" class="active">
+								<span class="icon"><i class="fas fa-dice-d6"></i></span> <span
+								class="title">Projet</span>
+						</a>
+						</li>
+						
+						<li><a href="#" th:href="@{/admins/messagerieGestionnaire}"> <span class="icon"><i
+									class="fab fa-delicious"></i></span> <span class="title">Messagerie</span>
+						</a></li>
+						<li th:if="${Admin.personne.role.toString() == 'ROLE_DIRECTEUR'}" ><a href="#"> <span class="icon"><i
+									class="fab fa-elementor"></i></span> <span class="title">UI
+									Elements</span>
+						</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="containerr">
+
+				<header class="intro">
+					<h1>Edition de projet</h1>
+				</header>
+
+
+				<div class="item">
+
+					<h4>CYCLE</h4>
+				<br>
+					<table class="table">
+						<tr>
+							<th scope="col">Saison :</th>
+							<th scope="col">Thématique</th>
+							<th scope="col">Chronologie</th>
+						</tr>
+						<tbody>
+							<td scope="row" th:text="${Cycle.saison}"></td>
+							<td scope="row" th:text="${Cycle.thematique} ?: 'A remplir'"></td>
+							<td scope="row" th:text="${Cycle.chronologie} ?: 'A remplir'"></td>
+						</tbody>
+					</table>
+					<br> <br>
+
+					<h4>COLLECTE</h4>
+				<br>
+					<table class="table">
+						<tr>
+							<th scope="col">Durée</th>
+							<th scope="col">Montant demandé</th>
+						</tr>
+						<tbody>
+							<td scope="row" th:text="${Collecte.duree} ?: 'A remplir'"></td>
+							<td scope="row" th:text="${Collecte.montantDemande} ?: 'A remplir'"></td>
+						</tbody>
+					</table>
+					<br> <br>
+					
+					<h4>CONTENU DE LA COLLECTE</h4>
+				<br>
+					<table class="table">
+						<tr>
+							<th scope="col">Titre</th>
+							<th scope="col">Descripion Courte</th>
+							<th scope="col">Descripion Longue</th>
+
+						</tr>
+						<tbody>
+							<td scope="row"
+								th:text="${ContenueCollecte.nomProjet} ?: 'A remplir'"></td>
+							<td scope="row"
+								th:text="${ContenueCollecte.descCourte} ?: 'A remplir'"></td>
+							<td scope="row"
+								th:text="${ContenueCollecte.descLongue} ?: 'A remplir'"></td>
+						</tbody>
+					</table>
+
+					
+				<form action="#" th:action="@{/admins/decisionProjetEnCollecte/}" method="post">
+								
+							 <input type="submit" name="DecisionGestionnaire" value="valider"  class="btn btn-custom-validation text-uppercase mb-2 shadow-sm"/>
+							<input type="submit" name="DecisionGestionnaire"  value="refuser"  class="btn btn-custom-validation text-uppercase mb-2 shadow-sm"/>
+							<input id="id" name="idProjet" type="hidden" th:value="${Projet.id}" />
+							<input id="id" name="idCollecte" type="hidden" th:value="${Collecte.id}" />
+							
+								</form>
+							
+
+
+
+
+				</div>
+</body>
+</html>

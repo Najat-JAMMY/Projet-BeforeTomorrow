@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Administrations</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+</head>
+<body>
+	<div class="table-responsive">
+		<h1>PROJETS DEPOSES</h1>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th >Date de depot</th>
+					<th>Date envisageé</th>					
+					<th>Description</th>
+					<th>Etat</th>
+					<th>Montant envisagé</th>
+					<th>Pays</th>
+					<th>Rattachement</th>
+					<th>titre du projet</th>
+					<th>Gestionnaire</th>
+					<th>Porteur du projet</th>
+
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="projet : ${listProjetDepose}">
+
+					<td th:text="${projet.dateDepot}"></td>
+					<td th:text="${projet.dateEnvisagee}"></td>
+					<td th:text="${projet.description}"></td>
+					<td th:text="${projet.etat}"></td>
+					<td th:text="${projet.montantEnvisage}"></td>
+					<td th:text="${projet.pays}"></td>
+					<td th:text="${projet.rattachement}"></td>
+					<td th:text="${projet.titre}"></td>
+					<td th:text="${projet.gestionnaire}"></td>
+					<td th:text="${projet.porteur}"></td>
+
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+</body>
+</html>

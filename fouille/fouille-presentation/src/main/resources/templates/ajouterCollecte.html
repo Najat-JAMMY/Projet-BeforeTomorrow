@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row no-gutter">
+			<!-- The content half -->
+			<div class="col-md-8 bg-custom">
+				<div class="login d-flex align-items-center py-5">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-10 col-xl-7 mx-auto">
+
+								<form action="#"
+									th:action="@{/projet/ajouterCollecte?CycleId=}+${cycle.id}"
+									th:object="${form}" method="post">
+									<input type="hidden" th:value="${collecte.id}" name="collecte">
+
+									<div class="row mt-5 justify-content-center text-center">
+										<div class="col col-lg-2 align-item-right">
+											<hr class="bt-color-vert">
+										</div>
+										<div class="col-md-auto">
+											<h5 class="bt-color-vert  bt-font-lemonRegular">Informations sur la collecte
+												de fonds</h5>
+										</div>
+										<div class="col col-lg-2 align-item-left">
+											<hr class="bt-color-vert">
+										</div>
+									</div>
+									<div class="row justify-content-center">
+										<div class="col-4">
+											<div class="mb-3">
+												<label class="form-label">Durée</label> <input
+													th:field="*{duree}" name="duree" type="text"
+
+													placeholder="Durée (nombre de jours)" autofocus=""
+													class="form-control shadow-sm px-4">
+											</div>
+										</div>
+										<div class="col-4">
+											<div class="mb-3">
+												<label class="form-label">Montant demandé</label> <input
+													th:field="*{montant}" name="montant" type="text"
+													placeholder="Montant (en €)" autofocus=""
+													class="form-control shadow-sm px-4">
+											</div>
+										</div>
+									</div>
+
+									<div class="row mt-5 justify-content-center text-center">
+										<div class="col col-lg-2 align-item-right">
+											<hr class="bt-color-vert">
+										</div>
+										<div class="col-md-auto">
+											<h5 class="bt-color-vert  bt-font-lemonRegular">Contreparties (facultatif)</h5>
+										</div>
+										<div class="col col-lg-2 align-item-left">
+											<hr class="bt-color-vert">
+										</div>
+									</div>
+									<div class="row">
+										<p>Vous pouvez proposer des contreparties en échange des
+											dons.</p>
+									</div>
+
+									<div class="col-5 justify-content-end">
+
+										<div class="justify-content-end"
+											th:if="${contreparties} != null">
+											<div th:each="cp : ${contreparties}" class="card card-custom">
+												<div class="card-body">
+												<div class="row">
+												<div class="col-10">
+														<h5 class="bt-color-vert " th:text="${cp.titre}"></h5>
+														
+														</div>
+														<div class="col-1">
+														<a href="#" th:href="'/projet/supprimerContrePartie?idContrePartie='+${cp.id}">
+													
+														<i class="fas fa-times"></i>
+														</a>
+														</div>
+												</div>
+													
+													
+													<span class="bt-color-vert">Pour un montant de : </span><span
+														class="display-6 font-weight-bold bt-color-vert"
+														th:text="${cp.montant} + ' €'"> </span>
+													<p class="card-text" th:text="${cp.description}"></p>
+												</div>
+												<img src="..." class="card-img-bottom" alt="">
+											</div>
+										</div>
+									</div>
+
+									<br> <input type="submit"
+										class="btn btn-custom-vert btn-block text-uppercase mb-2 shadow-sm"
+										value="Enregistrer">
+										
+									<a th:href="@{/projet/showProjet?id=}" + cycle.projet.id>
+								<button type="submit" class="btn btn-custom-vert btn-block text-uppercase mb-2 shadow-sm">Retour</button>
+									</a>
+								</form>
+								<a
+									th:href="'/projet/ajouterContrepartie?CollecteId='+${collecte.id}">Ajouter
+									une contrepartie</a>
+							</div>
+						</div>
+					</div>
+					<!-- End -->
+				</div>
+			</div>
+			<!-- End -->
+			<!-- IMAGE -->
+			<div class="col-md-4 d-none d-md-flex bg-image"></div>
+		</div>
+	</div>
+</body>
+</html>

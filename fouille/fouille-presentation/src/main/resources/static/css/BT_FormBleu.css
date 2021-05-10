@@ -1,0 +1,11 @@
+.form-control:focus  {
+	color: #1A658F !important;
+	border-color: #1A658F !important;
+	box-shadow: 4rem rgba(26, 101, 141, 20) !important;
+}
+
+.bg-image-lancement {
+	background-image: url("../img/FriseDesArchers.jpg");
+	background-size: cover;
+	background-position: center center;
+}

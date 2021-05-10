@@ -1,0 +1,19 @@
+.navbar-minimal>.navbar-menu>li>a:hover {
+	background-color: #009F4D;
+}
+
+@media ( min-width : 992px) {
+	.navbar-minimal>.navbar-menu>li>a>.desc {
+		background-color: #009F4D;
+	}
+}
+
+.card-custom {
+	background-clip: border-box;
+	border: 1px solid rgba(0, 159, 77, 0.125);
+	border-radius: 0.25rem;
+}
+
+.card-title {
+	color:black;
+}

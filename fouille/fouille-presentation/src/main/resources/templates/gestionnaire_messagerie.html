@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Admnistration</title>
+
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+ <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+ <link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<link rel="stylesheet" th:href="@{/css/TemplateAdmin.css}" />
+<link rel="stylesheet" th:href="@{/css/StyleAdmin.css}" />
+<!-- Demo CSS -->
+<link rel="stylesheet" href="css/demo.css">
+
+<script>
+		$(document).ready(function(){
+			$(".hamburger .hamburger__inner").click(function(){
+			  $(".wrapper").toggleClass("active")
+			})
+
+			$(".top_navbar .fas").click(function(){
+			   $(".profile_dd").toggleClass("active");
+			});
+		})
+	</script>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="top_navbar">
+			<div class="hamburger">
+				<div class="hamburger__inner">
+					<div class="one"></div>
+					<div class="two"></div>
+					<div class="three"></div>
+				</div>
+			</div>
+			<div class="menu">
+					<div class="logo">Before Tomorrow</div>
+				<div class="right_menu">
+					<ul>
+						<li><i class="fas fa-user"></i>
+							<div class="profile_dd">
+								
+								<div class="dd_item"> <a href="#"  th:href="@{/logout}">
+                  					<span class="title">Deconnexion</span>
+                					</a>
+                				</div>
+							</div></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	<div class="main_container">
+			<div class="sidebar">
+				<div class="sidebar__inner">
+					<div class="profile">
+						<div class="img">
+						</div>
+						<div class="profile_info">
+							<p>Bonjour</p>
+							<p class="profile_name" th:text="${Admin.personne.nom}"></p>
+						</div>
+					</div>
+					<ul>
+						<li>
+						<a href="#" th:href="@{/admins/projet}" >
+								<span class="icon"><i class="fas fa-dice-d6"></i></span> <span
+								class="title">Projet</span>
+						</a>
+						</li>
+						
+						<li><a href="#" th:href="@{/admins/messagerieGestionnaire}"  class="active"> <span class="icon"><i
+									class="fab fa-delicious"></i></span> <span class="title">Messagerie</span>
+						</a></li>
+						<li th:if="${Admin.personne.role.toString() == 'ROLE_DIRECTEUR'}" ><a href="#"> <span class="icon"><i
+									class="fab fa-elementor"></i></span> <span class="title">UI
+									Elements</span>
+						</a></li>
+			
+					</ul>
+				</div>
+			</div>
+			<div class="containerr">
+
+				<header class="intro">
+					<h1>Messagerie</h1>
+					
+				</header>
+
+
+				<div class="item">
+
+				
+			
+					<table class="table">
+						<tr>
+							<th scope="col">Nom</th>
+							<th scope="col">Prenom</th>
+							<th scope="col">Discussion</th>
+						</tr>
+						<tbody th:each="projet: ${listeDeprojet}">
+							<td scope="row" th:text="${projet.getPorteur.nom}">1</td>
+							<td scope="row" th:text="${projet.getPorteur.prenom}">1</td>
+							<td scope="row"><a
+								th:href="@{/admins/discussion/{idPorteur}(idPorteur=${projet.getPorteur.id})}">
+								<button type="submit"  class="btn btn-custom-validation text-uppercase mb-2 shadow-sm"> Details</button>
+							</a></td>
+							
+							
+
+							
+						</tbody>
+					</table>
+					
+					<br>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+</html>

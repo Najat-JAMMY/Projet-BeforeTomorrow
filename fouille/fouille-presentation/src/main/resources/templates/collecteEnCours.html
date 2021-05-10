@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Projet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<link rel="stylesheet" th:href="@{/css/BT_collecteEnCours.css}" />
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+	<div class="container-fluid">
+
+		<!-- MENU LATERAL -->
+		<nav class="navbar navbar-fixed-left navbar-minimal" role="navigation">
+			<ul class="navbar-menu">
+				<li><a href="#home" class="animate"> <span
+						class="fas fa-crosshairs fa-2x"></span><span class="desc animate">Home
+					</span>
+				</a></li>
+				<li><a href="#infos" class="animate"> <span
+						class="far fa-flag fa-2x"></span> <span class="desc animate">
+							La Mission </span>
+				</a></li>
+				<li><a href="#decouvrir" class="animate"> <span
+						class="fas fa-book fa-2x"></span> <span class="desc animate">
+							Découvrir</span>
+				</a></li>
+				<li><a href="#actualites" class="animate"> <span
+						class="fas fa-rss fa-2x"></span> <span class="desc animate">
+							Actualités </span>
+				</a></li>
+				<li><a href="#communaute" class="animate"> <span
+						class="fas fa-user-friends fa-2x"></span> <span
+						class="desc animate">Communauté</span>
+				</a></li>
+				<li><a href="#commentaires" class="animate"> <span
+						class="fas fa-comment-alt fa-2x"></span> <span
+						class="desc animate"> Commentaires </span>
+				</a></li>
+				<li sec:authorize="isAuthenticated()"><a
+					th:href="@{/compte/monCompte}" class="animate"> <span
+						class="fas fa-street-view fa-2x"></span> <span
+						class="desc animate"> Mon espace </span>
+				</a></li>
+				<li sec:authorize="isAnonymous()"><a th:href="@{/users/login}"
+					class="animate"> <span class="fas fa-street-view fa-2x"></span>
+						<span class="desc animate"> Mon espace </span>
+				</a></li>
+			</ul>
+		</nav>
+		<!-- fin section barre nav latérale -->
+
+		<!-- MENU SUPERIEUR -->
+		<div class=container-fluid id="home">
+			<!-- NAVBAR -->
+			<nav
+				class="navbar navbar-expand-lg navbar-light bg-rose sticky-top fixed-top">
+				<button class="navbar-toggler" type="button"
+					data-mdb-toggle="collapse" data-mdb-target="#navbarExample01"
+					aria-controls="navbarExample01" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<i class="fas fa-bars"></i>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarExample01">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-end">
+						<li class="nav-item"><a class="nav-link" href="#"
+							th:href="@{/accueil}"
+							style="font-variant: small-caps; font-family: Lemon; font-size: 200%;">Before
+								Tomorrow</a></li>
+						<li th:if="${projetuser != null && projetuser.etat.toString() == 'REJETE' }"
+							class="nav-item"><a class="nav-link" href="#"
+							th:href="@{/lancerUnProjet/lancerProjet}"><span
+								class="fas fa-location-arrow fa-2x"></span><span> Lancer
+									un nouveau projet</span></a></li>
+						<li class="nav-item"><a class="nav-link" href="#"
+							th:href="@{/compte/messagerieSupport}"><span
+								class="fas fa-question-circle fa-2x"></span><span></span></a></li>
+						<li sec:authorize="isAuthenticated()" class="nav-item active"><a
+							class="nav-link" aria-current="page" href="#"
+							th:href="@{/logout}"><span class="fas fa-map-signs fa-2x"></span><span>
+									Se déconnecter</span></a></li>
+						<li sec:authorize="isAnonymous()" class="nav-item active"><a
+							class="nav-link" aria-current="page" href="#"
+							th:href="@{/users/login}"><span
+								class="fas fa-map-signs fa-2x"></span><span> Se connecter</span></a></li>
+					</ul>
+					<ul class="navbar-nav d-flex align-items-end">
+						<li th:if="${discussion != null && discussion.staff != null }"
+							class="nav-item"><a class="nav-link" href="#"
+							th:href="@{/compte/messagerie}"><span
+								class="fas fa-envelope fa-2x" style="color: #009F4D;"></span><span
+								style="color: #009F4D;"> </span></a></li>
+						<li th:if="${projetuser == null}" class="nav-item"><a
+							class="nav-link" href="#"
+							th:href="@{/lancerUnProjet/lancerProjet}"><span
+								class="fas fa-location-arrow fa-2x" style="color: #1A658F;"></span><span
+								style="color: #1A658F;"> Lancez votre projet !</span></a></li>
+						<li th:if="${projetuser != null && projetuser.etat.toString() == 'EN_PREPARATION_DE_COLLECTE'}"
+							class="nav-item">
+							<form action="#" th:action="@{/projet/showProjet/}" method="get">
+								<button type="submit" class="btn-navbar-collecte" name="id"
+									th:value="${projetuser.id}">
+									<span class="fas fa-pen-nib fa-2x"></span><span> Éditer
+										mon projet</span>
+								</button>
+							</form>
+						</li>
+						<li th:if="${projetuser != null && projetuser.etat.toString() == 'EN_PREPARATION_DE_MISSION'}"
+							class="nav-item">
+							<form action="#" th:action="@{/showMission}" method="get">
+								<button type="submit" name="id" th:value="${projetuser.id}"
+									class="btn-navbar-mission">
+									<span class="fas fa-pen-nib fa-2x btn-navbar-mission"></span><span>
+										Éditer ma mission</span>
+								</button>
+							</form>
+						</li>
+						<li th:if="${projetuser != null && projetuser.etat.toString() == 'EN_MISSION'  }"
+							class="nav-item">
+							<form action="#" th:action="@{/actualites}" method="get">
+								<button type="submit" class="btn-navbar-mission" name="id"
+									th:value="${projetuser.id}">
+									<span class="fas fa-edit fa-2x"></span><span> Publier
+										une actualité</span>
+								</button>
+							</form>
+						</li>
+						<li th:if="${projetuser != null &&  projetuser.etat.toString() == 'EN_CAMPAGNE_DE_COLLECTE'  }"
+							class="nav-item">
+							<form action="#" th:action="@{/actualites}" method="get">
+								<button type="submit" class="btn-navbar-collecte" name="id"
+									th:value="${projetuser.id}">
+									<span class="fas fa-edit fa-2x"></span><span> Publier
+										une actualité</span>
+								</button>
+							</form>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<!-- FIN NAVBAR-->
+			<div class="p-5 text-center bt-custom-header bg-image"
+				th:style="'background-image:url('+@{'http://localhost:8080/projet/descriptionImage?contenuCollecteId='+${contenuCollecte.id}}+');
+			background-size: cover; background-position: center center;'">
+				<div class="mask" style="background-color: rgba(0, 0, 0, 0.2)">
+					<div class="d-flex justify-content-center align-items-center h-50">
+						<div class="text-white">
+							<h1 class="mb-3 bt-font-lemon"
+								th:text="${contenuCollecte.nomProjet}"></h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- FIN IMAGE HEADER-->
+		<!-- FIN MENU SUPERIEUR  -->
+		<!-- FIN DIV EN-TETE PHOTO FOND DESCRIPTION COURTE -->
+
+
+		<div class="container">
+			<!-- ROW SAISON -->
+			<div class="row justify-content-center" id="infos">
+				<div class="row mt-5 justify-content-center text-center"
+					id="sectionInfo">
+					<div class="col col-lg-2 align-item-right">
+						<hr class="bt-color-vert">
+					</div>
+					<div class="col-md-auto">
+						<h3 class="font-weight-bold bt-color-vert bt-font-lemon">
+							SAISON <span class="bt-color-vert" th:text="${saison}"></span>
+						</h3>
+					</div>
+					<div class="col col-lg-2 align-item-left">
+						<hr class="bt-color-vert">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-10 mb-4 text-center">
+						<p class="font-italic text-muted " th:if="${saison} != 'UNE'">Vous
+							avez raté la saison précédente ? Retrouvez un résumé ici</p>
+						<p class="font-italic text-muted"
+							th:text="${contenuCollecte.descCourte}"></p>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- FIN ROW SAISON -->
+
+			<!-- ROW MISSION + COLLECTE -->
+			<div class="row justify-content-between mb-5">
+				<div class="col-6 align-self-start" id="sectionInfo">
+					<!-- ROW MISSION -->
+					<div class="row justify-content-between">
+						<div class="row mt-5 mb-2 justify-content-center text-center">
+							<div class="col col-lg-3 align-item-right">
+								<hr class="bt-color-vert">
+							</div>
+							<div class="col-md-auto">
+								<h3 class="font-weight-bold bt-color-vert bt-font-lemonRegular">La
+									Mission</h3>
+							</div>
+							<div class="col col-lg-3 align-item-left">
+								<hr class="bt-color-vert">
+							</div>
+						</div>
+
+						<div class="col-4">
+							<p>
+								<i class="fas fa-map-pin fa-2x bt-color-vert"></i>
+							</p>
+							<p>
+								Lieu : </br> <label th:text="${pays}"></label>
+							</p>
+						</div>
+						<div class="col-4">
+							<p>
+								<i class="fas fa-plane-departure fa-2x bt-color-vert"></i>
+							</p>
+							<p>
+								Départ le : </br> <label th:text="${dateDepartMission}"></label>
+							</p>
+						</div>
+						<div class="col-4">
+							<p>
+								<i class="fas fa-user fa-2x bt-color-vert"></i>
+							</p>
+							<p>
+								Direction : </br> <label
+									th:text="${porteur.Prenom} +' ' +${porteur.Nom.toUpperCase}"></label>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-4" id="sectionInfo">
+
+					<div class="row mt-5 mb-2 justify-content-center text-center">
+						<div class="col col-lg-3 align-item-right">
+							<hr class="bt-color-vert">
+						</div>
+						<div class="col-md-auto">
+							<h3 class="font-weight-bold bt-color-vert bt-font-lemonRegular">La
+								Collecte</h3>
+						</div>
+						<div class="col col-lg-3 align-item-left">
+							<hr class="bt-color-vert">
+						</div>
+					</div>
+					<div class="row justify-content-around mb-2" id="sectionInfo">
+						<div class="col-6 align-self-end">
+							<span class="fs-1 bt-color-vert bt-font-lemonRegular">J-<span
+								th:text="${compteJours}"></span></span>
+						</div>
+						<div class="col-6 text-end align-self-end">
+							<span class="bt-color-vert"
+								style="font-style: italic; color: black;">Date de clôture
+								: </span></br> <span class="fs-3 font-weight-bold bt-color-vert"
+								th:text="${dateCloture}"></span>
+						</div>
+					</div>
+					<div class="row justify-content-around">
+						<div class="col-6 text-start align-item-bottom">
+
+							<span class="fs-1 font-weight-bold bt-color-vert"
+								th:text="${pourcentage} + '%'"></span>
+						</div>
+						<div class="col-6 text-end bt-color-vert">
+							<span class="bt-color-vert"
+								style="font-style: italic; color: black;">Objectif : </span></br> <span
+								class="fs-2 font-weight-bold bt-color-vert"
+								th:text="${collecte.montantDemande} + ' €'"></span>
+						</div>
+					</div>
+					<div class="row progress mb-4">
+						<div class="progress-bar bg-vert" role="progressbar"
+							th:style="'width:' +${pourcentage} +'%'" aria-valuenow="0"
+							aria-valuemin="0" aria-valuemax="100"></div>
+					</div>
+					<div class="row justify-content-end">
+						<div class="col-6" sec:authorize="isAuthenticated()">
+							<form action="#" th:if="${favori} == null"
+								th:action="@{/projet/ajouterAuxFavoris}" method="post">
+								<input type="hidden" name="idProjet"
+									th:value="${collecte.cycle.projet.id}" /> <input type="hidden"
+									name="page" th:value="${'collecteEnCours/'}" />
+								<button type="submit" class="btn btn-custom-vert btn-sm">Suivre
+									la mission</button>
+							</form>
+							<form action="#" th:if="${favori} != null"
+								th:action="@{/projet/retirerDesFavoris}" method="post">
+								<input type="hidden" name="idProjet"
+									th:value="${collecte.cycle.projet.id}" /> <input type="hidden"
+									name="page" th:value="${'collecteEnCours/'}" />
+								<button type="submit" class="btn btn-custom-vert btn-sm">Retirer
+									de ma liste</button>
+							</form>
+						</div>
+						<div class="col-6" sec:authorize="isAnonymous()">
+							<a th:href="@{/users/login}">
+								<button type="submit" class="btn btn-custom-vert btn-sm">Suivre
+									la mission</button>
+							</a>
+						</div>
+						<div class="col-6" sec:authorize="isAuthenticated()">
+							<form action="#" th:action="@{/don/faireUnDon}" method="get">
+								<input type="hidden" name="idCollecte" th:value="${collecte.id}">
+								<button type="submit" class="btn btn-custom-vert btn-sm">Contribuer</button>
+							</form>
+						</div>
+						<div class="col-6" sec:authorize="isAnonymous()">
+							<a th:href="@{/users/login}">
+								<button type="submit" class="btn btn-custom-vert btn-sm">Contribuer</button>
+							</a>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<p>En contribuant à cette mission, vous pourrez accéder aux
+							publications de l'équipe en direct du site de fouilles.</p>
+					</div>
+				</div>
+			</div>
+			<!-- FIN ROW MISSION + COLLECTE -->
+
+			<!-- ROW CONTENU + CONTREPARTIES -->
+			<div class="row justify-content-between">
+
+				<!-- COL CONTENU -->
+				<div class="col-6">
+
+					<!-- DESCRIPTION -->
+					<div class="row mt-5" id="decouvrir">
+						<h3 class="font-weight-bold">Description</h3>
+						<div class="col-lg-10 mb-4">
+							<p class="font-italic text-muted"
+								th:text="${contenuCollecte.descLongue}"></p>
+						</div>
+					</div>
+
+					<!-- ACTUALITES -->
+					<div class="row mb-4" id="actualites">
+						<h3 class="font-weight-bold">
+							Actualités <span class="badge bg-vert"
+								th:text="${actualites.size}" th:if="!${actualites.isEmpty}"></span>
+						</h3>
+						<p th:if="${actualites.isEmpty}">L'auteur n'a pas encore
+							publié d'actualité.</p>
+						<div class="card card-custom mb-4" th:each="ac : ${actualites}">
+							<div class="card-body">
+								<p class="card-text bt-color-vert bt-font-lemonRegular"
+									th:text="${#dates.format(ac.date,'dd-MM-yyyy')}"></p>
+								<p class="card-text bt-color-vert bt-font-lemonRegular">
+									L'équipe</p>
+								<p class="card-text" th:text="${ac.description}"></p>
+							</div>
+							<img class="card-img-bottom"
+								th:src="'/projet/actualiteImage/' + ${ac.id}" alt="">
+						</div>
+
+					</div>
+					<!-- COMMENTAIRES -->
+					<div class="row mt-5" id="commentaires">
+						<h3 class="font-weight-bold">
+							Commentaires <span class="badge bg-vert"
+								th:text="${commentaires.size}" th:if="!${commentaires.isEmpty}"></span>
+						</h3>
+						<p th:if="${commentaires.isEmpty}">Soyez le premier à poster
+							un commentaire !</p>
+						<!-- TEST TEMPLATE-->
+						<div class="container mt-5 mb-5">
+							<div
+								class="row height d-flex justify-content-center align-items-center">
+								<form sec:authorize="isAuthenticated()"
+									th:action="@{/projet/posterUnCommentaire}" method="post">
+									<div
+										class="mt-3 d-flex flex-row align-items-center p-3 form-color">
+										<input name="commentaire" type="text"
+											class="form-control shadow-sm px-4"
+											placeholder="Ecrivez un commentaire..." required /> <input
+											type="hidden" name="idProjet"
+											th:value="${collecte.cycle.projet.id}" /> <input
+											type="hidden" name="page" th:value="${'collecteEnCours/'}" />
+									</div>
+									<div>
+										<input type="submit"
+											class="btn btn-custom-validation text-uppercase mb-2 shadow-sm"
+											value="Poster">
+									</div>
+								</form>
+							</div>
+							<div class="mt-2">
+								<div class="d-flex flex-row p-3"
+									th:each="commentaire : ${commentaires}">
+									<div class="w-100">
+										<div class="d-flex justify-content-between align-items-center">
+											<div class="d-flex flex-row align-items-center">
+												<span class="mr-2 bt-color-vert bt-font-lemonRegular"
+													th:text="${commentaire.espaceUtilisateur.personne.prenom} +' ' +${commentaire.espaceUtilisateur.personne.nom}"></span>
+											</div>
+											<small class="bt-color-vert bt-font-lemonRegular"
+												th:text="${#dates.format(commentaire.dateCommentaire, 'dd-MM-yyyy')}"></small>
+										</div>
+										<p class="text-justify comment-text mb-0"
+											th:text="${commentaire.textCommentaire}"></p>
+										<div class="d-flex flex-row user-feed">
+											<span class="ml-3"><i class="fa fa-comments-o mr-2"></i></span>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- FIN COMMENTAIRES-->
+
+				<!-- COL INFO COLLECTE & CONTREPARTIES -->
+				<div class="col-4 justify-content-end">
+					<!-- ROW COLLECTE -->
+					<div class="row justify-content-end"
+						th:if="!${contreparties.isEmpty}">
+						<div class="col col-lg-3 align-item-right">
+							<hr class="bt-color-vert">
+						</div>
+						<div class="col-md-auto">
+							<h3 class="font-weight-bold bt-color-vert bt-font-lemonRegular">Contreparties</h3>
+						</div>
+						<div class="col col-lg-3 align-item-left">
+							<hr class="bt-color-vert">
+						</div>
+						<div class="col-lg-10 mb-4 text-start">
+							<p class="font-italic">Cette mission propose des
+								contreparties</p>
+						</div>
+					</div>
+					<!-- ROW CONTREPARTIE -->
+					<div class="row">
+						<div th:each="cp : ${contreparties}" class="card card-custom">
+							<div class="card-body">
+								<h5 class="card-title" th:text="${cp.titre}"></h5>
+								<span class="bt-color-vert">Pour un montant de : </span><span
+									class="fs-3 font-weight-bold bt-color-vert"
+									th:text="${cp.montant} + ' €'"> </span>
+								<p class="card-text" th:text="${cp.description}"></p>
+							</div>
+							<img th:src="${cp.image}" class="card-img-bottom" alt="">
+						</div>
+					</div>
+					<!-- COMMUNAUTE -->
+					<div class="row mt-5" id="communaute">
+						<h3 class="font-weight-bold">
+							Communauté <span class="badge bg-vert"
+								th:text="${communaute.size}" th:if="!${communaute.isEmpty}"></span>
+						</h3>
+						<p th:if="${communaute.isEmpty}">Soyez le premier à contribuer
+							à la mission !</p>
+						<div class="row">
+							<div th:each="com : ${communaute}" class="card card-custom">
+								<div class="card-body">
+									<h5 class="card-title bt-color-vert bt-font-lemonRegular"
+										th:text="${com.prenom} +' ' +${com.nom}"></h5>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- FIN ROW CONTENU + CONTREPARTIES -->
+</body>
+</html>

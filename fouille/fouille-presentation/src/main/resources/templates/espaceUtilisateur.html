@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Editer mon projet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="row no-gutter">
+			<!-- The content half -->
+			<div class="col-md-8 bg-custom">
+				<div class="login d-flex align-items-center py-5">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-10 col-xl-7 mx-auto">
+
+								<form  th:action="@{/users/infoProfil}"
+									th:object="${espaceUtilisateurForm}" method="post"
+									enctype="multipart/form-data">
+									
+									<input type="hidden" th:field="*{idUser}" name="userId">
+									<div class="row mt-5 justify-content-center text-center">
+										<div class="col col-lg-2 align-item-right">
+											<hr class="bt-color-marron">
+										</div>
+										<div class="col-md-auto">
+											<h5 class="bt-font-lemonRegular bt-color-marron">Votre profil</h5>
+										</div>
+										<div class="col col-lg-2 align-item-left">
+											<hr class="bt-color-marron">
+										</div>
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label">Nom: </label> <input
+											th:field="*{nom}" name="nom" type="text"
+											placeholder="Nomt..." autofocus=""
+											class="form-control shadow-sm px-4">
+									</div>
+									<div class="mb-3">
+										<label class="form-label">Prénom: </label> <input
+											th:field="*{prenom}" name="prenom"
+											type="text" placeholder="Prenom..." autofocus=""
+											class="form-control shadow-sm px-4">
+									</div>
+									<div class="mb-3">
+										<label class="form-label">Téléphone: </label> <input
+											th:field="*{telephone}" name="telephone"
+											type="text" placeholder="Numéro de téléphone"
+											autofocus="" class="form-control shadow-sm px-4">
+									</div>
+									<div class="mb-3">
+										<label class="form-label">Email: </label> <input
+											th:field="*{email}" name="email" 
+											type="text" disabled placeholder="Email..."
+											autofocus="" class="form-control shadow-sm px-4">
+									</div>
+									<div class="mb-3">
+										<label class="form-label">Mot de passe: </label> <input
+											th:field="*{motDePasse}" name="motDePasse"
+											type="password" placeholder="Laissez vide pour ne pas le modifier..."
+											autofocus="" class="form-control shadow-sm px-4">
+									</div>
+								
+								
+									
+									<input type="submit"
+										class="btn btn-custom-validation text-uppercase mb-2 shadow-sm"
+										value="Enregistrer">
+								<input type="button"class="btn btn-custom-validation btn-block text-uppercase mb-2 shadow-sm" value="Retour" onclick="history.go(-1)"> 
+							
+							
+								</form>
+								
+						
+								
+							</a>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End -->
+			<!-- IMAGE -->
+			<div class="col-md-4 d-none d-md-flex bg-image"></div>
+		</div>
+	</div>
+</body>
+</html>

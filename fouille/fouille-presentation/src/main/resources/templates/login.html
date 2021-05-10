@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<title>Connexion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row no-gutter">
+			<!-- The image half -->
+			<div class="col-md-6 d-none d-md-flex bg-image"></div>
+			<!-- The content half -->
+			<div class="col-md-6 bg-custom">
+				<div class="login d-flex align-items-center py-5">
+					<!-- Demo content-->
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-10 col-xl-7 mx-auto">
+								<form th:action="@{/users/login}" method="post">
+									<!-- error message -->
+									<div th:if="${param.error}">
+										<div class="alert alert-danger">Email ou mot de passe
+											incorrect .</div>
+									</div>
+
+									<!-- logout message -->
+									<div th:if="${param.logout}">
+										<div class="alert alert-info">Vous avez été deconnecté.</div>
+									</div>
+
+									<div class="mb-3">
+										<input type="email" name="username" id="username"
+											placeholder="Adresse email" required="" autofocus=""
+											class="form-control shadow-sm px-4">
+									</div>
+									<div class="mb-3">
+										<input type="password" placeholder="Mot de passe" required=""
+											id="password" name="password"
+											class="form-control shadow-sm px-4">
+									</div>
+									<div class="custom-control custom-checkbox mb-3">
+										<input id="customCheck1" type="checkbox" checked
+											class="custom-control-input"> <label
+											for="customCheck1" class="custom-control-label">Se
+											souvenir de moi</label>
+									</div>
+										<button type="submit"
+											class="btn btn-custom-validation btn-block text-uppercase mb-2 shadow-sm"
+											name="login-submit" id="login-submit">Connexion</button>
+										<input type="button"
+											class="btn btn-custom-validation btn-block text-uppercase mb-2 shadow-sm"
+											value="Retour" onclick="history.go(-1)">
+								</form>
+								<div class="form-group">
+									<span>Vous n'avez pas encore de compte ?<a href="/"
+										th:href="@{/users/inscription}"> Inscrivez-vous ! </a></span>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- End -->
+
+				</div>
+			</div>
+			<!-- End -->
+
+		</div>
+	</div>
+
+</body>
+</html>

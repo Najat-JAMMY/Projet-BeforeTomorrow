@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Administration</title>
+
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/css/BTStyle.css}" />
+<link rel="stylesheet" th:href="@{/css/gestionnaire_messagerie.css}" />
+<link rel="stylesheet" th:href="@{/css/TemplateAdmin.css}" />
+
+<!-- Demo CSS -->
+<link rel="stylesheet" href="css/demo.css">
+
+<script>
+		$(document).ready(function(){
+			$(".hamburger .hamburger__inner").click(function(){
+			  $(".wrapper").toggleClass("active")
+			})
+
+			$(".top_navbar .fas").click(function(){
+			   $(".profile_dd").toggleClass("active");
+			});
+		})
+	</script>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="top_navbar">
+			<div class="hamburger">
+				<div class="hamburger__inner">
+					<div class="one"></div>
+					<div class="two"></div>
+					<div class="three"></div>
+				</div>
+			</div>
+			<div class="menu">
+					<div class="logo">Before Tomorrow</div>
+				<div class="right_menu">
+					<ul>
+						<li><i class="fas fa-user"></i>
+							<div class="profile_dd">
+								
+								<div class="dd_item"> <a href="#"  th:href="@{/logout}">
+                  					<span class="title">Deconnexion</span>
+                					</a>
+                				</div>
+							</div></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="main_container">
+			<div class="sidebar">
+				<div class="sidebar__inner">
+					<div class="profile">
+						<div class="img">
+							<!--                 <img src="img/pic.png" alt="profile_pic"> -->
+						</div>
+						<div class="profile_info">
+							<p>Bonjour</p>
+							<p class="profile_name" th:text="${Admin.personne.nom}"></p>
+						</div>
+					</div>
+					<ul>
+						<li><a href="#" th:href="@{/admins/projet}"> <span
+								class="icon"><i class="fas fa-dice-d6"></i></span> <span
+								class="title">Projet</span>
+						</a></li>
+
+						<li><a href="#" th:href="@{/admins/messagerieGestionnaire}"
+							class="active"> <span class="icon"><i
+									class="fab fa-delicious"></i></span> <span class="title">Messagerie</span>
+						</a></li>
+						<li th:if="${Admin.personne.role.toString() == 'ROLE_DIRECTEUR'}"><a
+							href="#"> <span class="icon"><i
+									class="fab fa-elementor"></i></span> <span class="title">UI
+									Elements</span>
+						</a></li>
+
+					</ul>
+				</div>
+			</div>
+			<div class="containerr">
+
+				<header class="intro">
+					<h1>Discussion</h1>
+				</header>
+
+
+				
+					<div th:if="${ListeDeMessage.empty}">
+							<div class="item">
+						
+							<div class="ConvVide">
+							
+							<p>Envoyer le premier message !</p>
+							
+							</div>
+
+							<form action="#" th:action="@{/admins/envoieMesssage/}"
+								method="post">
+
+								<div class="input-group">
+									<input class="form-control width100" name="Message"> <span
+										class="input-group-btn">
+										<button class="btn btn-secondary">Envoyer</button>
+									</span>
+								
+
+								<input id="id" name="idDiscussion" type="hidden"
+									th:value="${Discussion.id}" /> <input id="id" name="iDPorteur"
+									type="hidden" th:value="${Porteur.personne.id}" />
+
+									</div>
+							</form>
+
+						</div>
+					
+
+				</div>
+
+
+				<div th:unless="${ListeDeMessage.empty}">
+					<div class="item">
+
+
+
+						<div class="">
+							<div th:each="message: ${ListeDeMessage}">
+								<div class="containers in"
+									th:if="${message.personne.personne.role.toString() == 'ROLE_GESTIONNAIRE_PROJET'}">
+									
+									<h5 th:text="${message.personne.personne.nom}"></h5>
+									<p th:text="${message.message}"></p>
+									
+								</div>
+
+								<div class="containers darker out"
+									th:if="${message.personne.personne.role.toString() != 'ROLE_GESTIONNAIRE_PROJET'}">
+									
+									<h5 th:text="${message.personne.personne.nom}"
+										class="nomDroite"></h5>
+									<p th:text="${message.message}"  class="nomDroite" style="margin-right : -40px;"></p>
+								
+								</div>
+
+							</div>
+
+							<form action="#" th:action="@{/admins/envoieMesssage/}"
+								method="post">
+
+								<div class="input-group">
+									<input class="form-control width100" name="Message" style="height:39px;"> <span
+										class="input-group-btn">
+										<button class="btn btn-custom-validation text-uppercase mb-2 shadow-sm">Envoyer</button>
+									</span>
+								
+
+								<input id="id" name="idDiscussion" type="hidden"
+									th:value="${Discussion.id}" /> <input id="id" name="iDPorteur"
+									type="hidden" th:value="${Porteur.personne.id}" />
+
+									</div>
+							</form>
+
+
+
+
+						</div>
+					</div>
+
+
+
+
+				</div>
+				
+				
+
+			</div>
+		</div>
+
+	</div>
+
+
+<!-- 	<footer class="credit"> -->
+<!-- 		Author: <a href="https://www.youtube.com/c/CodingMarket" -->
+<!-- 			rel="nofollow" target="_blank"> Coding Market </a> - Distributed By: -->
+<!-- 		<a title="Awesome web design code & scripts" -->
+<!-- 			href="https://www.codehim.com?source=demo-page" target="_blank">CodeHim</a> -->
+<!-- 	</footer> -->
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Liste des actualites</title>
+</head>
+<body>
+
+<span th:each="actualite: ${actualites}">
+    <span th:text="${actualite.id}" ></span>
+    <span th:text="${actualite.description}" ></span>
+    
+    <br>
+</span>
+
+</body>
+</html>
